@@ -1,0 +1,29 @@
+services:
+  db:
+    image: postgres:latest
+    restart: always
+    shm_size: 128mb
+    environment:
+      POSTGRES_PASSWORD_FILE: /run/secrets/db_password
+      POSTGRES_USER: nico
+      POSTGRES_DB: test_db
+    secrets:
+      - db_password
+    ports:
+      - 5432:5432
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: nico@admin.com
+      PGADMIN_DEFAULT_PASSWORD_FILE: /run/secrets/pgadmin_password
+    ports:
+      - 5050:80
+    secrets:
+      - pgadmin_password
+
+secrets:
+  db_password:
+    file: db_password.txt
+  pgadmin_password:
+    file: pgadmin_password.txt
